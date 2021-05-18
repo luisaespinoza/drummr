@@ -4,7 +4,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/esm/Button';
-// import * as Tone from 'tone' 
+import { Player } from 'tone';
+import * as Tone from 'tone' 
 
 // const sampler = new Tone.Sampler({
 //   urls: {
@@ -36,12 +37,17 @@ class BeatPad extends Component {
       trackArray: this.generateTracks()
     }
   }
-
+  
+  // masterTrack = new Tone.Loop((callback, "noteDivision").start(0))
   trackNames = ["Kick", "Snare", " Closed Hat", "Open Hat", "Ride", "Ride Bell", "Crash", "Clap"]
   sampleURLS = ["https://tonejs.github.io/audio/loop/kick.mp3", "https://tonejs.github.io/audio/loop/snare.mp3", " https://tonejs.github.io/audio/drum-samples/R8/hihat.mp3", "kick.mp3", "kick.mp3", "kick.mp3", "kick.mp3", "kick.mp3"]
   generateTracks= () => {
     console.log(this.sampleURLS)
     return this.state.trackArray.map( (element, index)=> {
+      let newTrack = new Tone.Player(this.sampleURLS[index]).toDestination()
+      // let newTrack = new Tone.Loop(() =>{
+      //   new Tone.Player(this.sampleURLS[index]).toDestination() 
+      // }, "16n").start(0)
       return(
         <>
           <Container>
@@ -50,6 +56,7 @@ class BeatPad extends Component {
               name={this.trackNames[index]}
               value={index+1}
               URL={this.sampleURLS[index]}
+              Sample={newTrack}
               />
             </Row>
           </Container>
@@ -58,6 +65,16 @@ class BeatPad extends Component {
       }
       )
     }
+    
+    loop =()=>{
+      Tone.loaded().then(()=>{
+        Tone.Transport.scheduleOnce(()=>{
+          this.state.trackArray[0].Sample.start(0).stop(0+1)
+        },"8n")
+        Tone.Transport.start()
+      })
+    }
+
     render() {
     console.log(this.sampleURLS)
     return (
@@ -65,7 +82,7 @@ class BeatPad extends Component {
         <Container>
           <Row>
             <Col>
-              <Button variant="success">
+              <Button variant="success" onClick={this.loop}>
                 Play
               </Button>
               <Button variant='danger'>

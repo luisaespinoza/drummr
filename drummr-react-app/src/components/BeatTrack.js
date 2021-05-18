@@ -18,6 +18,8 @@ class BeatTrack extends Component {
       buttonArray: this.generateButtons(props)
     }
   }
+  
+  
   sampleURL= this.props.URL
   buffer = new Tone.Buffer((this.sampleURL,()=>{
     let buff = this.buffer.get()
@@ -25,6 +27,8 @@ class BeatTrack extends Component {
   }))
   sample = new Tone.Player(this.sampleURL).toDestination()
   // console.log(this.sample,"this is buffer",buffer)
+  
+  
   generateButtons= (props) => {
     return this.state.buttonArray.map( (element, index)=> {
       return(
@@ -33,14 +37,16 @@ class BeatTrack extends Component {
     }
     )
   } 
-  play = (props) => {
-    Tone.loaded().then(()=>{this.sample.start()})
+  
+  
+  // play = (props) => {
+  //   Tone.loaded().then(()=>{this.sample.start()})
 
-    // let audio = document.querySelector(`#${props.value}`)
-    // let audio = document.querySelector(`audio`)
-    // console.log(audio);
-    // audio.play()
-  }
+  //   // let audio = document.querySelector(`#${props.value}`)
+  //   // let audio = document.querySelector(`audio`)
+  //   // console.log(audio);
+  //   // audio.play()
+  // }
 
   render() {
     console.log(this.props.URL)
